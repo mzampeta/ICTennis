@@ -1,4 +1,4 @@
 # IC Tennis
-Automated booking system for tennis practice
+Automated booking system for tennis lessons
 
 Author: MZ
