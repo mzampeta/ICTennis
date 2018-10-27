@@ -14,9 +14,9 @@ with requests.Session() as c:
 #Start scrapping
 soup = BeautifulSoup(page.text, 'html.parser')
 #num = soup.find('a', attrs={'class':'btn disabled'})
-#btn btn-default / btn disabled
-links = soup.find_all('a', attrs={'class':'btn disabled'}, href=True)
-for l in links:
-    #print all booking link requests
-    print (l['href'])
-
+tables = soup.find_all('table')
+for t in tables:
+    #to find the parent tag and display DATA
+    for trs in t.find_all('tr'):
+        tds = trs.find_all('td')
+        print (tds[1].text+" level at "+tds[0].text+" is: "+tds[3].text)
