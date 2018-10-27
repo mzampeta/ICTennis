@@ -17,5 +17,6 @@ soup = BeautifulSoup(page.text, 'html.parser')
 #btn btn-default / btn disabled
 links = soup.find_all('a', attrs={'class':'btn disabled'}, href=True)
 for l in links:
+    #print all booking link requests
     print (l['href'])
 
