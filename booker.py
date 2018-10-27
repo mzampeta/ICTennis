@@ -11,12 +11,11 @@ with requests.Session() as c:
     payload = {'cid_user': my_username, 'cid_pass': my_password}
     c.post(url, data=payload)
     page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
+#Start scrapping
+soup = BeautifulSoup(page.text, 'html.parser')
+#num = soup.find('a', attrs={'class':'btn disabled'})
+#btn btn-default / btn disabled
+links = soup.find_all('a', attrs={'class':'btn disabled'}, href=True)
+for l in links:
+    print (l['href'])
 
-    soup = BeautifulSoup(page.text, 'html.parser')
-    #num = soup.find('a', attrs={'class':'btn disabled'})
-    #btn btn-default / btn disabled
-    links = soup.find_all('a', attrs={'class':'btn disabled'}, href=True)
-    for l in links:
-        print (l['href'])
-
-# Test for a new branch
