@@ -14,7 +14,8 @@ with requests.Session() as c:
 
     soup = BeautifulSoup(page.text, 'html.parser')
     #num = soup.find('a', attrs={'class':'btn disabled'})
-    links = soup.find_all('a', attrs={'class':'btn disabled'}, href=True)
+    #btn btn-default / btn disabled
+    links = soup.find_all('a', attrs={'class':'btn btn-default'}, href=True)
     for l in links:
         print (l['href'])
 
