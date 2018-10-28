@@ -1,7 +1,12 @@
 #ignore MY CREDENTIALS
 IC_creds
+
 # ignore the file literally named DS Store
 .DS_Store
 html_Exaple.txt
+
 #Ignore IDE config files
 .idea/*
+
+#WTF is that ?
+_pycache__
