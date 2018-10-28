@@ -1,0 +1,8 @@
+#ignore MY CREDENTIALS
+IC_creds
+# ignore the file literally named DS Store
+.DS_Store
+html_Exaple.txt
+push.py
+#Ignore IDE config files
+.idea/*

@@ -1,6 +1,7 @@
 import requests
 import os
 from bs4 import BeautifulSoup
+from push import pushover, title, user_key
 
 my_username = os.environ.get('IC_USER')
 my_password = os.environ.get('IC_PASS')
@@ -19,8 +20,10 @@ for t in tables:
     for trs in t.find_all('tr'):
         tds = trs.find_all('td')
         a = tds[3].find('a', href=True)
-        print (tds[1].string+" level at "+tds[0].text+" is:\t"+tds[3].text.strip())
+        print (tds[1].text+" level at "+tds[0].text+" is:\t"+tds[3].text.strip())
         if tds[3].text.strip() == 'Full':
             print("\tNot available for booking\n")
         else:
             print ("\turl: "+a['href']+"\n")
+            message = "Bookings available at " + tds[0].text
+            pushover(title, message, user_key)
