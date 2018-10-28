@@ -13,10 +13,14 @@ with requests.Session() as c:
     page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
 #Start scrapping
 soup = BeautifulSoup(page.text, 'html.parser')
-#num = soup.find('a', attrs={'class':'btn disabled'})
 tables = soup.find_all('table')
 for t in tables:
-    #to find the parent tag and display DATA
+#TODO find the parent tag and display DATE
     for trs in t.find_all('tr'):
         tds = trs.find_all('td')
-        print (tds[1].text+" level at "+tds[0].text+" is: "+tds[3].text)
+        a = tds[3].find('a', href=True)
+        print (tds[1].string+" level at "+tds[0].text+" is:\t"+tds[3].text.strip())
+        if tds[3].text.strip() == 'Full':
+            print("\tNot available for booking\n")
+        else:
+            print ("\turl: "+a['href']+"\n")
