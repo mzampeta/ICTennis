@@ -12,6 +12,7 @@ with requests.Session() as c:
     payload = {'cid_user': my_username, 'cid_pass': my_password}
     c.post(url, data=payload)
     page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
+    
 #Start scrapping
 soup = BeautifulSoup(page.text, 'html.parser')
 tables = soup.find_all('table')
