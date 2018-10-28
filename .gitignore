@@ -9,4 +9,4 @@ html_Exaple.txt
 .idea/*
 
 #WTF is that ?
-_pycache__
+__pycache__
