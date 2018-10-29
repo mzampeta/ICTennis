@@ -12,7 +12,7 @@ with requests.Session() as c:
     payload = {'cid_user': my_username, 'cid_pass': my_password}
     c.post(url, data=payload)
     page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
-    
+
 #Start scrapping
 soup = BeautifulSoup(page.text, 'html.parser')
 tables = soup.find_all('table')
@@ -26,5 +26,11 @@ for t in tables:
             print("\tNot available for booking\n")
         else:
             print ("\turl: "+a['href']+"\n")
-            message = "Bookings available at " + tds[0].text
-            pushover(title, message, user_key)
+            if "Advanced" in tds[1].text:
+                message = "Bookings available at " + tds[0].text
+                pushover(title, message, user_key)
+                book = c.get(a['href'])
+                message = "Booking made " + str(book.status_code)
+                pushover(title, message, user_key)
+
+
