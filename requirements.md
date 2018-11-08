@@ -2,6 +2,10 @@
 
 Required Packages to run the IC_Tennis booker
 
-Requests
-BeautifulSoup
+import requests
+import os
+from bs4 import BeautifulSoup
+from push import pushover, title, user_key
+import time
+
 
