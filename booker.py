@@ -12,17 +12,6 @@ def timer():
     t = str(time.strftime("%d/%m/%Y %H:%M:%S %Z"))
     return t
 
-#Initiate session
-with requests.Session() as c:
-    url = 'https://union.ic.ac.uk/acc/tennis/booking/login'
-    c.get(url)
-    payload = {'cid_user': my_username, 'cid_pass': my_password}
-    c.post(url, data=payload)
-    page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
-
-soup = BeautifulSoup(page.text, 'html.parser')
-all_tables = soup.find_all('table')
-
 #Start scrapping
 def book(tables):
     for t in tables:
@@ -32,7 +21,6 @@ def book(tables):
                 #print booking sttus for each category
                 #print (tds[1].text+" level at "+tds[0].text.strip()+" is:\t"+tds[3].text.strip())
                 if "Advanced" in tds[1].text:
-                    a = tds[3].find('a', href=True)
                     if "Cancel" in tds[3].text.strip():
                         message = "Already booked at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
                         print (timer()+": "+message)
@@ -42,19 +30,35 @@ def book(tables):
                         print (timer()+": "+message)
                         pushover(title, message, user_key)
                     elif "Book" in tds[3].text.strip():
+                        a = tds[3].find('a', href=True)
                         #Attempt booking
                         book = c.get(a['href'])
                         message = str(book.status_code)+":: Booking completed at "+tds[0].text.strip()+" for "+tds[1].text.strip()
                         print (timer()+": "+message)
                         pushover(title, message, user_key)
+                        return str(book.status_code)
                     else:
                         print ("ERROR check with admin")
                         message = "ERROR "+tds[1].text.strip()+" at "+tds[0].text.strip()+" is "+tds[3].text.strip()
                         print (timer()+": "+message)
                         pushover(title, message, user_key)
 
-#TRY BOOKING
-book(all_tables)
+#Initiate session
+with requests.Session() as c:
+    url = 'https://union.ic.ac.uk/acc/tennis/booking/login'
+    c.get(url)
+    payload = {'cid_user': my_username, 'cid_pass': my_password}
+    c.post(url, data=payload)
+    page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
+    soup = BeautifulSoup(page.text, 'html.parser')
+    all_tables = soup.find_all('table')
+    for i in range (1,20):
+        book(all_tables)
+        print ("Attemp ")
+        time.sleep(2)
+        page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
+        soup = BeautifulSoup(page.text, 'html.parser')
+        all_tables = soup.find_all('table')
 
 
 
