@@ -1,1 +1,1 @@
-init: python booker.py
+web: python booker.py
