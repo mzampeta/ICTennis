@@ -30,22 +30,28 @@ def book(tables):
                         message = str(booker.status_code)+":: Booking completed at "+tds[0].text.strip()+" for "+tds[1].text.strip()
                         # print (timer()+": "+message)
                         pushover(title, message, user_key)
+                        return 1
                     else:
                         message = str(booker.status_code)+":: Not Booked"
                         pushover(title, message, user_key)
+                        return 0
                 elif "Cancel" in tds[3].text.strip():
                     message = "Already booked at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
-                    print (timer()+": "+message)
+                    # print (timer()+": "+message)
                     # pushover(title, message, user_key)
+                    return 0
                 elif tds[3].text.strip() == 'Full' or tds[3].text.strip() == "":
-                    message = "Not available for booking at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
-                    print (timer()+": "+message)
+                    # message = "Not available for booking at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
+                    # print (timer()+": "+message)
                     # pushover(title, message, user_key)
+                    return 3
                 else:
-                    print ("ERROR check with admin")
-                    message = "ERROR "+tds[1].text.strip()+" at "+tds[0].text.strip()+" is "+tds[3].text.strip()
-                    print (timer()+": "+message)
+                    # print ("ERROR check with admin")
+                    # message = "ERROR "+tds[1].text.strip()+" at "+tds[0].text.strip()+" is "+tds[3].text.strip()
+                    # print (timer()+": "+message)
                     # pushover(title, message, user_key)
+                    return 0
+            break
 
 #Initiate session
 with requests.Session() as c:
@@ -53,16 +59,14 @@ with requests.Session() as c:
     c.get(url)
     payload = {'cid_user': my_username, 'cid_pass': my_password}
     c.post(url, data=payload)
-    page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
-    soup = BeautifulSoup(page.text, 'html.parser')
-    all_tables = soup.find_all('table')
     for i in range (1,31):
-        print ("Attemp "+str(i))
-        book(all_tables)
-        time.sleep(10)
         page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
         soup = BeautifulSoup(page.text, 'html.parser')
         all_tables = soup.find_all('table')
+        #Attemp to BOOK
+        result = book(all_tables)
+        print (result)
+        time.sleep(1)
 
 
 
