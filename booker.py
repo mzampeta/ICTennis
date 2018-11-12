@@ -3,15 +3,20 @@ import os
 from bs4 import BeautifulSoup
 from push import pushover, title, user_key
 import time
+import sys
 
 my_username = os.environ.get('IC_USER')
 my_password = os.environ.get('IC_PASS')
-
+days=["Tue","Wed","Sat","Sun"]
 
 #return current datetime
 def timer():
     t = str(time.strftime("%d/%m/%Y %H:%M:%S %Z"))
-    return t
+    day = str(time.strftime("%a"))
+    return t,day
+
+if timer()[1] in days:
+    sys.exit(1)
 
 #Start scrapping
 def book(tables):
@@ -28,7 +33,7 @@ def book(tables):
                     booker = c.get(a['href'])
                     if booker.status_code == 200:
                         message = str(booker.status_code)+":: Booking completed at "+tds[0].text.strip()+" for "+tds[1].text.strip()
-                        # print (timer()+": "+message)
+                        # print (timer()[0]+": "+message)
                         pushover(title, message, user_key)
                         return 1
                     else:
@@ -37,18 +42,18 @@ def book(tables):
                         return 0
                 elif "Cancel" in tds[3].text.strip():
                     message = "Already booked at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
-                    # print (timer()+": "+message)
+                    # print (timer()[0]+": "+message)
                     # pushover(title, message, user_key)
                     return 0
                 elif tds[3].text.strip() == 'Full' or tds[3].text.strip() == "":
                     # message = "Not available for booking at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
-                    # print (timer()+": "+message)
+                    # print (timer()[0]+": "+message)
                     # pushover(title, message, user_key)
-                    return 3
+                    return 0
                 else:
                     # print ("ERROR check with admin")
                     # message = "ERROR "+tds[1].text.strip()+" at "+tds[0].text.strip()+" is "+tds[3].text.strip()
-                    # print (timer()+": "+message)
+                    # print (timer()[0]+": "+message)
                     # pushover(title, message, user_key)
                     return 0
             break
