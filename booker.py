@@ -33,7 +33,7 @@ def book(tables):
                     booker = c.get(a['href'])
                     if booker.status_code == 200:
                         message = str(booker.status_code)+":: Booking completed at "+tds[0].text.strip()+" for "+tds[1].text.strip()
-                        # print (timer()[0]+": "+message)
+                        print (timer()[0]+": "+message)
                         pushover(title, message, user_key)
                         return 1
                     else:
@@ -42,18 +42,18 @@ def book(tables):
                         return 0
                 elif "Cancel" in tds[3].text.strip():
                     message = "Already booked at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
-                    # print (timer()[0]+": "+message)
+                    print (timer()[0]+": "+message)
                     # pushover(title, message, user_key)
                     return 0
                 elif tds[3].text.strip() == 'Full' or tds[3].text.strip() == "":
-                    # message = "Not available for booking at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
-                    # print (timer()[0]+": "+message)
+                    message = "Not available for booking at: " + tds[0].text.strip()+" for "+tds[1].text.strip()
+                    print (timer()[0]+": "+message)
                     # pushover(title, message, user_key)
                     return 0
                 else:
-                    # print ("ERROR check with admin")
-                    # message = "ERROR "+tds[1].text.strip()+" at "+tds[0].text.strip()+" is "+tds[3].text.strip()
-                    # print (timer()[0]+": "+message)
+                    print ("ERROR check with admin")
+                    message = "ERROR "+tds[1].text.strip()+" at "+tds[0].text.strip()+" is "+tds[3].text.strip()
+                    print (timer()[0]+": "+message)
                     # pushover(title, message, user_key)
                     return 0
             break
@@ -71,7 +71,7 @@ with requests.Session() as c:
         #Attemp to BOOK
         result = book(all_tables)
         print (result)
-        time.sleep(1)
+        time.sleep(10)
 
 
 
