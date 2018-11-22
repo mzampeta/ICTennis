@@ -63,7 +63,7 @@ with requests.Session() as c:
     c.get(url)
     payload = {'cid_user': my_username, 'cid_pass': my_password}
     c.post(url, data=payload)
-    for i in range (1,31):
+    for i in range (1,51):
         page = c.get('https://union.ic.ac.uk/acc/tennis/booking')
         soup = BeautifulSoup(page.text, 'html.parser')
         all_tables = soup.find_all('table')
