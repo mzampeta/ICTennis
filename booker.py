@@ -56,7 +56,6 @@ def book(tables):
                     print (timer()[0]+": "+message)
                     # pushover(title, message, user_key)
                     return 0
-            break
 
 #Initiate session
 with requests.Session() as c:
