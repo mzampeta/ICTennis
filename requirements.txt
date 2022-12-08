@@ -2,6 +2,6 @@ beautifulsoup4==4.6.3
 requests==2.20.1
 gunicorn==19.9.0
 urllib3==1.23
-certifi==2018.8.13
+certifi==2022.12.7
 chardet==3.0.4
 idna==2.7
